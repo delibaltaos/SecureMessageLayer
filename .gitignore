@@ -50,3 +50,38 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+
+# Jetbrains IDEs (IntelliJ, CLion, etc.)
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Visual Studio Code 
+.vscode/
+
+# Eclipse
+.settings/
+.project
+.classpath
+
+# NetBeans
+nbproject/
+nbbuild/
+dist/
+nbdist/
+nbactions.xml
+nb-configuration.xml
+
+# Xcode
+xcuserdata/
+*.xcscmblueprint
+*.xccheckout
+
+# Others
+*.sw?
+.DS_Store
+Thumbs.db
+
+# CMake build directory
+cmake-build-debug/
