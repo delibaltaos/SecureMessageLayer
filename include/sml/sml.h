@@ -28,6 +28,47 @@ typedef struct pairwise_session_t pairwise_session;
 typedef struct group_session_t group_session;
 
 /**
+ * @struct prekey_bundle
+ * @brief Structure representing a pre-key bundle for X3DH protocol
+ *
+ * This structure contains all the necessary components for initiating
+ * a secure session using the X3DH (Extended Triple Diffie-Hellman) protocol.
+ */
+typedef struct {
+ /**
+  * @brief User's long-term identity public key
+  */
+ unsigned char identity_key[32];
+
+ /**
+  * @brief User's signed pre-key
+  */
+ unsigned char signed_prekey[32];
+
+ /**
+  * @brief Signature of the signed pre-key
+  */
+ unsigned char signed_prekey_signature[64];
+
+ /**
+  * @brief One-time pre-key (may be NULL if all one-time pre-keys are exhausted)
+  */
+ unsigned char one_time_prekey[32];
+
+ /**
+  * @brief Flag indicating whether a one-time pre-key is included
+  * 1 if one-time pre-key is present, 0 otherwise
+  */
+ int has_one_time_prekey;
+
+ /**
+  * @brief Pre-key identifier
+  */
+ uint32_t prekey_id;
+
+} prekey_bundle;
+
+/**
  * @brief Initializes a new pairwise session
  *
  * This function initializes a new pairwise session using the Double Ratchet algorithm.
@@ -45,6 +86,18 @@ int pairwise_init_session(pairwise_session **session,
                           size_t their_public_key_len);
 
 int pairwise_destroy_session(pairwise_session *session);
+
+/**
+ * @brief Retrieves the user's current pre-key bundle for X3DH
+ *
+ * This function retrieves the current pre-key bundle for the user.
+ * The pre-key bundle contains the necessary components for others to initiate a secure session with this user.
+ * The module automatically manages and regenerates pre-keys as needed.
+ *
+ * @param[out] own_prekey_bundle Pointer to store the user's current pre-key bundle
+ * @return 0 on success, or a negative error code on failure
+ */
+int x3dh_get_own_prekey_bundle(prekey_bundle *own_prekey_bundle);
 
 /**
  * @brief Encrypts data using the pairwise session
